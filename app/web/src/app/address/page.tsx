@@ -2,13 +2,14 @@
 
 import { Button } from "@/components/shadcn/button";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { AccountInfo, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useEffect, useState } from "react";
 
 export default function Address() {
   const { connection } = useConnection();
   const { publicKey } = useWallet();
   const [balance, setBalance] = useState<number>(0);
+	const [accountInfo, setAccountInfo] = useState<AccountInfo<Buffer> | null>(null);
   
 	const getAirdropOnClick = async () => {
 		try {
@@ -34,15 +35,18 @@ export default function Address() {
 
 	useEffect(() => {
 		if (publicKey) {
-			(async function getBalanceEvery10Seconds() {
+			(async function getInfovEvery10Seconds() {
+				// Balance
 				const newBalance = await connection.getBalance(publicKey);
 				setBalance(newBalance / LAMPORTS_PER_SOL);
-				setTimeout(getBalanceEvery10Seconds, 10000);
+
+				// AccountInfo
+				const newAccountInfo = await connection.getAccountInfo(publicKey);
+				setAccountInfo(newAccountInfo);
+				setTimeout(getInfovEvery10Seconds, 10000);
 			})();
 		}
 	}, [publicKey, connection, balance]);
-
-
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-evenly p-24">
@@ -50,6 +54,7 @@ export default function Address() {
         <div className="flex flex-col gap-4">
           <h1>Your Public key is: {publicKey?.toString()}</h1>
           <h2>Your Balance is: {balance} SOL</h2>
+					<p>Your account info is: {accountInfo ? JSON.stringify(accountInfo) : ""}</p>
           <div>
             <Button
               onClick={getAirdropOnClick}
