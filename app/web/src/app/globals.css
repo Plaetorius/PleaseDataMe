@@ -5,6 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  --color-pink: oklch(0.679 0.1997 22.83);
+  --color-light-pink: oklch(0.734 0.1634 19.22);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -35,12 +37,12 @@
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar: oklch(0.985 0 0); /* Background color of the sidebar */
+  --sidebar-foreground: oklch(0.679 0.1997 22.83); /* Main font color */
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-accent: oklch(0.734 0.1634 19.22);
+  --sidebar-accent-foreground: oklch(0.3 0.1997 22.83);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
@@ -145,5 +147,10 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  label.required::after {
+    content: "*";
+    color: hsl(var(--destructive));
+    margin-left: 0.25rem;
   }
 }
